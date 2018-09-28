@@ -13,4 +13,7 @@ env:
 before_install:
   - rvm use $USE_RUBY --install --fuzzy
 script:
-  - RAILS_ENV="" make
+  - cd rubygem
+  - bundle check  || bundle install
+  - bundle exec rspec -I lib --format progress
+
