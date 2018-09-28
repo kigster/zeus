@@ -29,8 +29,8 @@ module Zeus
         ensure
           if err && err.backtrace
             err_features += err.backtrace.map { |b| b.split(':').first }
-                           .select { |f| f.start_with?('/') }
-                           .take_while { |f| f != __FILE__ }
+                                .select { |f| f.start_with?('/') }
+                                .take_while { |f| f != __FILE__ }
           end
 
           notify_features(Set.new($LOADED_FEATURES) + err_features - old_features)
@@ -40,13 +40,13 @@ module Zeus
       # Internal: This should only be called by Zeus code
       def set_feature_pipe(feature_pipe)
         @feature_mutex = Mutex.new
-        @feature_pipe = feature_pipe
+        @feature_pipe  = feature_pipe
       end
 
       # Internal: This should only be called by Zeus code
       def clear_feature_pipe
         @feature_pipe.close
-        @feature_pipe = nil
+        @feature_pipe  = nil
         @feature_mutex = nil
       end
 
@@ -54,7 +54,7 @@ module Zeus
 
       def notify_features(features)
         unless @feature_pipe
-          raise "Attempted to report features to Zeus when not running as part of a Zeus process"
+          raise 'Attempted to report features to Zeus when not running as part of a Zeus process'
         end
 
         @feature_mutex.synchronize do
@@ -67,16 +67,16 @@ module Zeus
   end
 end
 
-
 module Kernel
-
   def load(file, *a)
     Kernel.load(file, *a)
   end
+
   private :load
 
   class << self
     alias_method :__load_without_zeus, :load
+
     def load(file, *a)
       Zeus::LoadTracking.add_feature(file)
       __load_without_zeus(file, *a)
@@ -88,6 +88,7 @@ require 'yaml'
 module YAML
   class << self
     alias_method :__load_file_without_zeus, :load_file
+
     def load_file(file, *a)
       Zeus::LoadTracking.add_feature(file)
       __load_file_without_zeus(file, *a)

@@ -1,12 +1,13 @@
 require 'zeus/load_tracking'
 
-describe "Zeus::LoadTracking" do
+describe 'Zeus::LoadTracking' do
   let(:test_filename) { __FILE__ }
-  let(:test_dirname)  { File.dirname(test_filename) }
+  let(:test_dirname) { File.dirname(test_filename) }
 
-  class MyError < StandardError; end
+  class MyError < StandardError;
+  end
 
-  def expect_to_load(expect_features, expect_err=NilClass)
+  def expect_to_load(expect_features, expect_err = NilClass)
     buf = StringIO.new
     Zeus::LoadTracking.set_feature_pipe(buf)
 
@@ -70,11 +71,7 @@ describe "Zeus::LoadTracking" do
     context 'loading invalid code' do
       it 'tracks requires that raise a SyntaxError' do
         files = [expand_asset_path('invalid_syntax.rb')]
-        # SyntaxError does not have a backtrace in 2.3+ (https://bugs.ruby-lang.org/issues/12811)
-        if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.3.0')
-          files << test_filename
-        end
-
+        files << test_filename
         expect_to_load(files, SyntaxError) do
           require expand_asset_path('invalid_syntax')
         end
