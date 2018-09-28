@@ -1,5 +1,7 @@
+### Fork's Status
+
 [![Build Status](https://travis-ci.org/kigster/zeus.svg?branch=master)](https://travis-ci.org/kigster/zeus)
-[![Gem Version](https://badge.fury.io/rb/zeus@2x.png)](https://badge.fury.io/rb/zeus)
+[![Gem Version](https://badge.fury.io/rb/zeus.svg)](https://badge.fury.io/rb/zeus)
 
 # Zeus
 
